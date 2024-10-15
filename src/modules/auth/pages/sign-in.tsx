@@ -1,58 +1,25 @@
 import { useSignInMutation } from "../hooks/mutations";
 import { SignIn } from "../types";
-import LogoImg from '../../../assets/erplogo (1).jpg';
+import LogoImg from '../../../assets/erplogo2.jpg';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input, notification } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const SignInComponent = () => {
   const navigate = useNavigate();
-  const { mutateAsync: signInMutation } = useSignInMutation();
+  const { mutateAsync: signIn } = useSignInMutation();
 
   const initialValues = {
     phone_number: "",
     password: "",
   };
 
-  // interface ApiError {
-  //   response?: {
-  //     data?: {
-  //       message?: string;
-  //     };
-  //   };
-  //   message: string;
-  // }
-
   const handleSubmit = async (values: SignIn) => {
     console.log(values);
-
     try {
-      const response = await signInMutation(values);
-
-      if (response.status === 200 || response.status === 201) {
-        const access_token = response?.data?.data?.tokens?.access_token;
-        console.log("Access token:", access_token);
-        localStorage.setItem("access_token", access_token);
-        
-        notification.success({
-          message: 'Login Successful',
-          description: 'You have successfully logged in.',
-        });
-
-        navigate("/");
-      } else {
-        console.log("Error occurred during login.");
-        notification.error({
-          message: 'Login Failed',
-          description: 'An error occurred during login.',
-        });
-      }
-    } catch (err: any) {
-      console.log(err.response?.data || err.message);
-      notification.error({
-        message: 'Login Failed',
-        description: err.response?.data?.message || 'An unexpected error occurred.',
-      });
+      await signIn(values);
+    } catch (err) {
+      console.error("An error occurred during login:", err);
     }
   };
 
@@ -96,7 +63,6 @@ const SignInComponent = () => {
                 <Button
                   block
                   htmlType="submit"
-                 
                   className='bg-[#d45b07] text-white p-8 text-[20px]'
                 >
                   Log in
