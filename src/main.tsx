@@ -2,7 +2,8 @@ import { createRoot } from "react-dom/client";
 import Root from './router/index';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import "./index.css"
+import "./index.css";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -14,7 +15,8 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById('root')!).render( 
   <QueryClientProvider client={queryClient}>
-    <Root />
+    <Root />  
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 );
+

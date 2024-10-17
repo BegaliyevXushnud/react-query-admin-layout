@@ -8,9 +8,11 @@
     "paths": {
       "@":["./src"],
       "@modules":["./src/modules"],
-      "api":["./src/api"],
-      "types":["./src/types"],
+      "@api":["./src/api"],
+      "@types":["./src/types"],
       "utils":["./src/utils"],
+      "@component":["./src/component"],
+      
     },
     /* Bundler mode */
     "moduleResolution": "bundler",

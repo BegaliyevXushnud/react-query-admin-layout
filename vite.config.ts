@@ -10,7 +10,8 @@ export default defineConfig({
       {find: "@modules", replacement:"/src/modules"},
       {find: "@api", replacement:"/src/api"},
       {find: "@types", replacement:"/src/types"},
-      {find: "@utils", replacement:"/src/utils"}
+      {find: "@component", replacement:"/src/component"},
+      
     ]
   }
 })
