@@ -9,13 +9,11 @@ export function useCreateCategory() {
     return useMutation({
         mutationFn: (data: CategoryType) => createCategory(data),
         onSuccess: async (response) => {
-            Notification("success", response.data?.message);
+            Notification("success", response.data?.message || "Category created successfully");
+            await queryClient.invalidateQueries({ queryKey: ['category'] });
         },
         onError: (error: any) => {
             Notification("error", error?.response?.data?.message || "An error occurred");
-        },
-        onSettled: async () => {
-            await queryClient.invalidateQueries({ queryKey: ['category'] });
         },
     });
 }
@@ -26,13 +24,17 @@ export function useUpdateCategory() {
     return useMutation({
         mutationFn: (data: { id: string; category: CategoryType }) => updateCategory(data.id, data.category),
         onSuccess: (response) => {
-            Notification("success", response.data?.message);
+            Notification("success", response.data?.message || "Category updated successfully");
         },
         onError: (error: any) => {
             Notification("error", error?.response?.data?.message || "An error occurred");
         },
         onSettled: async (_, __, variables) => {
-            await queryClient.invalidateQueries({ queryKey: ["category", { id: variables.id }] });
+            if (variables && variables.id) {
+                await queryClient.invalidateQueries({ queryKey: ["category", { id: variables.id }] });
+            } else {
+                await queryClient.invalidateQueries({ queryKey: ["category"] });
+            }
         },
     });
 }
@@ -43,7 +45,7 @@ export function useDeleteCategory() {
     return useMutation({
         mutationFn: (id: string) => deleteCategory(id),
         onSuccess: (response) => {
-            Notification("success", response.data?.message);
+            Notification("success", response.data?.message || "Category deleted successfully");
         },
         onError: (error: any) => {
             Notification("error", error?.response?.data?.message || "An error occurred");
